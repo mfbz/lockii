@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Lockii.SmartLockNft</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Neo.SmartContract.Framework" Version="3.1.0" />
+
+    <Compile Include="../../../library/Core/OwnablePausableContract.cs" />
+		<Compile Include="../../../library/Core/OwnableContract.cs" />
+		<Compile Include="../../../library/Core/DefaultContract.cs" />
+    <Compile Include="../../../library/Core/stores/OwnerStore.cs" />
+    <Compile Include="../../../library/Core/stores/PausedStore.cs" />
+    <Compile Include="../../../library/Core/stores/DeployedStore.cs" />
+  </ItemGroup>
+
+  <Target Name="NccsBuild" AfterTargets="Build" Inputs="$(MSBuildProjectFullPath);@(Compile);" Outputs="$(TargetDir)/sc/$(TargetName).nef;$(TargetDir)/sc/$(TargetName).nefdbgnfo;$(TargetDir)/sc/$(TargetName).manifest.json;">
+    <PropertyGroup>
+      <_NccsDebugArguments Condition="'$(Configuration)'=='Debug'">--debug --no-optimize</_NccsDebugArguments>
+      <_NccsDebugArguments Condition="'$(Configuration)'!='Debug'"></_NccsDebugArguments>
+    </PropertyGroup>
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet nccs $(_NccsDebugArguments) &quot;$(MSBuildProjectFullPath)&quot;" />
+  </Target>
+</Project>
