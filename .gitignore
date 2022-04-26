@@ -37,3 +37,12 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# vercel
+.vercel

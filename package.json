@@ -6,13 +6,66 @@
   "main": "./scripts/lockii.js",
   "scripts": {
     "scripts:start": "node ./scripts/lockii.js",
+		"web:dev": "next dev",
+		"web:build": "next build",
+		"web:start": "next start",
+		"web:lint": "next lint",
     "contracts:restore": "dotnet restore ./contracts/dirs.proj",
     "contracts:restore-tools": "dotnet tool restore --tool-manifest ./contracts/dotnet-tools.json",
     "contracts:build": "dotnet build ./contracts/dirs.proj"
   },
-  "dependencies": {
-    "@cityofzion/neon-js": "^5.0.0",
-    "dotenv": "^16.0.0",
-    "pigpio": "^3.3.1"
-  }
+	"dependencies": {
+		"dotenv": "^16.0.0",
+    "pigpio": "^3.3.1",
+		"@ant-design/icons": "4.6.4",
+		"@cityofzion/neon-js": "^5.0.0",
+		"@rentfuse-labs/neo-wallet-adapter-ant-design": "^0.3.1",
+		"@rentfuse-labs/neo-wallet-adapter-base": "^0.3.1",
+		"@rentfuse-labs/neo-wallet-adapter-react": "^0.3.1",
+		"@rentfuse-labs/neo-wallet-adapter-wallets": "^0.3.1",
+		"antd": "4.16.13",
+		"buffer": "^6.0.3",
+		"classnames": "^2.3.1",
+		"cuid": "^2.1.8",
+		"gray-matter": "^4.0.3",
+		"less-vars-to-js": "^1.3.0",
+		"next": "12.0.8",
+		"next-compose-plugins": "^2.2.1",
+		"next-i18next": "^9.1.0",
+		"next-plugin-antd-less": "^1.5.2",
+		"null-loader": "^4.0.1",
+		"react": "17.0.2",
+		"react-cool-dimensions": "^2.0.7",
+		"react-dom": "17.0.2",
+		"react-icons": "^4.3.1",
+		"react-infinite-scroll-component": "^6.1.0",
+		"react-json-view": "^1.21.3",
+		"react-markdown": "^8.0.0",
+		"remark-gfm": "^3.0.1",
+		"rxjs": "^7.5.5"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.15.5",
+		"@types/classnames": "^2.3.1",
+		"@types/node": "^16.11.6",
+		"@types/react": "17.0.21",
+		"@types/react-dom": "^17.0.9",
+		"babel-plugin-import": "^1.13.3",
+		"babel-plugin-inline-react-svg": "^2.0.1",
+		"eslint": "7.32.0",
+		"eslint-config-next": "^12.0.2",
+		"jest": "^27.3.1",
+		"next-transpile-modules": "^9.0.0",
+		"prettier": "^2.4.1",
+		"ts-jest": "^27.0.7",
+		"typescript": "4.4.3",
+		"webpack": "5.0.0"
+	},
+	"resolutions": {
+		"@walletconnect/client": "2.0.0-beta.17",
+		"@walletconnect/jsonrpc-utils": "^1.0.0",
+		"@walletconnect/qrcode-modal": "^2.0.0-alpha.20",
+		"@walletconnect/types": "2.0.0-beta.17",
+		"@walletconnect/utils": "2.0.0-beta.17"
+	}
 }

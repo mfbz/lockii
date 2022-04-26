@@ -1,6 +1,14 @@
-# lockii
+<p align="center">
+  <img width="200" src="./lockii-icon.png">
+</p>
 
-## Installation
+<h1 align="center">Lockii</h1>
+
+## 💡 What is
+
+Lockii is a smart lock device managed by NFTs on the Neo blockchain.
+
+## Raspberry installation
 
 #### Step 1 - Install the pigpio C library
 

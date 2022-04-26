@@ -24,6 +24,8 @@ namespace Lockii.SmartLockNft
 	[ContractPermission("*", "*")]
 	public class SmartLockNftContract : OwnablePausableContract
 	{
+		// The maximum amount of record returned from a get call
+		private static readonly int MAX_GET_COUNT = 50;
 		// The maximum amount of tokens ever creatable
 		private static readonly BigInteger MAX_TOKEN_COUNT = 10_000;
 
@@ -235,6 +237,36 @@ namespace Lockii.SmartLockNft
 			ExecutionEngine.Assert(token != null, "Invalid token id");
 
 			return token.Locked;
+		}
+
+		/// <summary>
+		/// Get token list in descending order from index (inclusive) or last one if passed 0 (default for BigInteger)
+		/// </summary>
+		/// <param name="address">The address of the borrower.</param>
+		/// <param name="fromIndex">The index from which starting to return a renting.</param>
+		public static List<Token> GetTokenListOf(UInt160 address, BigInteger fromIndex)
+		{
+			// Init empty list to be returned
+			List<Token> tokens = new List<Token>();
+			// The iterator used to cycle on address tokens
+			Iterator<ByteString> iterator = (Iterator<ByteString>)TokensOf(address);
+
+			// The max count reachable per call
+			int toIndex = (int)fromIndex + MAX_GET_COUNT;
+			// An aux counter for cycling well :D
+			int i = 0;
+			// Cycle through all address tokens and fill the list with needed ones
+			while (iterator.Next())
+			{
+				// If reached max index break and return
+				if (i == toIndex) break;
+				// Skip until fromIndex and when found add values from it and on
+				if (i >= fromIndex) tokens.Add(TokenIdToTokenStore.Get(iterator.Value));
+
+				// Increment counter for next iteration
+				i++;
+			}
+			return tokens;
 		}
 
 		/// <summary>
