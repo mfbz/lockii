@@ -17,7 +17,6 @@ export const ApplicationPage = React.memo(function ApplicationPage({ children }:
 				.a-content-wrapper {
 					width: 100%;
 					height: 100%;
-					background: red;
 					padding: 24px 48px 24px 48px;
 				}
 			`}</style>

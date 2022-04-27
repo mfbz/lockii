@@ -1,16 +1,17 @@
-import { useWallet } from '@rentfuse-labs/neo-wallet-adapter-react';
-import { Avatar, Modal, Button, Card, List, Typography, Spin } from 'antd';
-import Head from 'next/head';
-import { ApplicationPage } from '../application';
 import Icon from '@ant-design/icons';
-import { useTokenListOf } from '../hooks/use-token-list-of';
-import { MdOutlineHideSource, MdOutlineLockOpen, MdOutlineLock } from 'react-icons/md';
-import { useExecuteSetLocked } from '../contracts/smart-lock-nft/hooks/use-execute-set-locked';
+import { useWallet } from '@rentfuse-labs/neo-wallet-adapter-react';
+import { Avatar, Button, Card, List, Modal, Spin, Typography } from 'antd';
+import Head from 'next/head';
 import { useCallback, useState } from 'react';
+import { MdOutlineHideSource, MdOutlineLock, MdOutlineLockOpen } from 'react-icons/md';
+import { ApplicationPage } from '../application';
+import { useExecuteSetLocked } from '../contracts/smart-lock-nft/hooks/use-execute-set-locked';
+import { useTokenListOf } from '../hooks/use-token-list-of';
+import LockiiIcon from '../assets/svg/lockii-icon.svg';
 
 export default function IndexPage() {
 	const { address, connected } = useWallet();
-	const { tokenList } = useTokenListOf({ address: address || '' });
+	const { tokenList, onReloadTokenList } = useTokenListOf({ address: address || '' });
 
 	const [loadingVisible, setLoadingVisible] = useState(false);
 	const executeSetLocked = useExecuteSetLocked();
@@ -18,9 +19,10 @@ export default function IndexPage() {
 		async (tokenId: string, locked: boolean) => {
 			setLoadingVisible(true);
 			await executeSetLocked(tokenId, locked);
+			await onReloadTokenList();
 			setLoadingVisible(false);
 		},
-		[executeSetLocked],
+		[executeSetLocked, onReloadTokenList],
 	);
 
 	return (
@@ -39,11 +41,16 @@ export default function IndexPage() {
 								renderItem={(item) => {
 									return (
 										<List.Item style={{ marginBottom: 24 }}>
-											<Card style={{ boxShadow: item.locked ? '0 2px 12px #ff4d4f' : '0 2px 12px #52c41a' }}>
-												<div style={{ width: '100%', height: 100, display: 'flex', flexDirection: 'row' }}>
+											<Card
+												style={{
+													width: '100%',
+													border: item.locked ? '4px solid #ff4d4f' : '4px solid #52c41a',
+													borderRadius: 24,
+												}}
+											>
+												<div style={{ width: '100%', height: 40, display: 'flex', flexDirection: 'row' }}>
 													<div
 														style={{
-															width: 100,
 															height: '100%',
 															display: 'flex',
 															justifyContent: 'center',
@@ -51,11 +58,22 @@ export default function IndexPage() {
 														}}
 													>
 														<Avatar
-															size={80}
-															icon={<Icon component={MdOutlineHideSource} style={{ fontSize: 64, color: '#0d0d16' }} />}
-															style={{ background: item.locked ? '#ff4d4f' : '#52c41a' }}
+															size={48}
+															icon={
+																<Icon
+																	component={!item.locked ? MdOutlineLockOpen : MdOutlineLock}
+																	style={{ fontSize: 32, color: '#0d0d16' }}
+																/>
+															}
+															style={{
+																background: item.locked ? '#ff4d4f' : '#52c41a',
+																display: 'flex',
+																justifyContent: 'center',
+																alignItems: 'center',
+															}}
 														/>
 													</div>
+
 													<div
 														style={{
 															flex: 1,
@@ -63,14 +81,18 @@ export default function IndexPage() {
 															display: 'flex',
 															justifyContent: 'space-between',
 															alignItems: 'center',
+															marginLeft: 24,
 														}}
 													>
-														<Typography.Text strong={true} style={{ marginTop: 0 }}>
-															{item.id}
-														</Typography.Text>
+														<div style={{ display: 'flex', flexDirection: 'column' }}>
+															<Typography.Text style={{ marginTop: 0 }}>{'Device id'}</Typography.Text>
+															<Typography.Text strong={true} style={{ marginTop: 0 }}>
+																{item.id}
+															</Typography.Text>
+														</div>
 
 														<Button
-															type={'primary'}
+															type={'default'}
 															icon={
 																<Icon
 																	component={item.locked ? MdOutlineLockOpen : MdOutlineLock}
@@ -79,6 +101,7 @@ export default function IndexPage() {
 															}
 															size={'large'}
 															onClick={() => onSetLocked(item.id, !item.locked)}
+															style={{ borderRadius: 20 }}
 														>
 															{item.locked ? 'Unlock' : 'Lock'}
 														</Button>
@@ -119,8 +142,10 @@ export default function IndexPage() {
 					)}
 				</div>
 
-				<Modal visible={loadingVisible} width={260} centered={true} closable={false} maskClosable={false} footer={null}>
-					<Spin />
+				<Modal visible={loadingVisible} width={120} centered={true} closable={false} maskClosable={false} footer={null}>
+					<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+						<Icon component={LockiiIcon} spin={true} style={{ fontSize: 60 }} />
+					</div>
 				</Modal>
 			</ApplicationPage>
 

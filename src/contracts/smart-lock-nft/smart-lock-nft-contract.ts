@@ -12,7 +12,7 @@ export class SmartLockNftContract {
 		onInvoke: (props: any) => Promise<any>,
 	) => {
 		const result = await onInvoke({
-			scriptHash: NeoConstants.NETWORK_DATA.lockiiContracts.SmartLockNft,
+			scriptHash: NeoConstants.NETWORK_DATA.lockiiContracts.smartLock,
 			operation: 'setLocked',
 			args: [toInvocationArgument('ByteArray', tokenId), toInvocationArgument('Boolean', locked)],
 			signers: [
@@ -30,7 +30,7 @@ export class SmartLockNftContract {
 		const response = await waitTransaction(
 			NeoConstants.NETWORK_DATA.rpcUrl,
 			result.data?.txId,
-			NeoConstants.NETWORK_DATA.lockiiContracts.SmartLockNft,
+			NeoConstants.NETWORK_DATA.lockiiContracts.smartLock,
 			'OnLockedChanged',
 		);
 		if (!response) {
@@ -55,7 +55,7 @@ export class SmartLockNftContract {
 
 	private static getContract = () => {
 		return new Neon.experimental.SmartContract(
-			Neon.u.HexString.fromHex(NeoConstants.NETWORK_DATA.lockiiContracts.SmartLockNft),
+			Neon.u.HexString.fromHex(NeoConstants.NETWORK_DATA.lockiiContracts.smartLock),
 			{
 				networkMagic: NeoConstants.NETWORK_DATA.networkMagic,
 				rpcAddress: NeoConstants.NETWORK_DATA.rpcUrl,
