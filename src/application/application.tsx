@@ -14,9 +14,7 @@ export const Application = React.memo(function Application({ children }: { child
 				<WalletModalProvider centered={false} featuredWallets={4}>
 					<ApplicationLayout>
 						<ApplicationHeader />
-						<div className={'a-application-wrapper'}>
-							<div style={{ flex: 1 }}>{children}</div>
-						</div>
+						<div className={'a-application-wrapper'}>{children}</div>
 					</ApplicationLayout>
 				</WalletModalProvider>
 			</WalletProvider>

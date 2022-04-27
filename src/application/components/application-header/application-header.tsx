@@ -28,6 +28,7 @@ export const ApplicationHeader = React.memo(function ApplicationHeader() {
 			<style jsx>{`
 				:global(.a-header) {
 					width: 100%;
+					height: ${HEADER_HEIGHT}px;
 					padding: 0px;
 					background: #ffffff;
 				}

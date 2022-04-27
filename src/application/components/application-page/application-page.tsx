@@ -5,34 +5,20 @@ export const ApplicationPage = React.memo(function ApplicationPage({ children }:
 	return (
 		<>
 			<Layout.Content className={'a-content'}>
-				<div className={'a-content-wrapper'}>
-					<div className={'a-inner'}>
-						<div className={'a-inner-wrapper'}>{children}</div>
-					</div>
-				</div>
+				<div className={'a-content-wrapper'}>{children}</div>
 			</Layout.Content>
 
 			<style jsx>{`
-				div :global(.a-content) {
+				:global(.a-content) {
 					width: 100%;
 					height: 100%;
 				}
 
 				.a-content-wrapper {
 					width: 100%;
-				}
-
-				.a-inner {
-					width: 100%;
+					height: 100%;
+					background: red;
 					padding: 24px 48px 24px 48px;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					overflow: visible;
-				}
-
-				.a-inner-wrapper {
-					width: 100%;
 				}
 			`}</style>
 		</>
