@@ -8,8 +8,11 @@ import { ApplicationPage } from '../application';
 import { useExecuteSetLocked } from '../contracts/smart-lock-nft/hooks/use-execute-set-locked';
 import { useTokenListOf } from '../hooks/use-token-list-of';
 import LockiiIcon from '../assets/svg/lockii-icon.svg';
+import useDimensions from 'react-cool-dimensions';
 
 export default function IndexPage() {
+	const { observe, width } = useDimensions();
+
 	const { address, connected } = useWallet();
 	const { tokenList, onReloadTokenList } = useTokenListOf({ address: address || '' });
 
@@ -138,6 +141,10 @@ export default function IndexPage() {
 							<Typography.Title level={4} style={{ marginTop: 0 }}>
 								{'Your new Neo blockchain powered IoT device'}
 							</Typography.Title>
+
+							<div ref={observe} style={{ width: '100%', position: 'absolute', bottom: -width / 1.5, margin: 0 }}>
+								<LockiiIcon width={'100%'} />
+							</div>
 						</div>
 					)}
 				</div>
