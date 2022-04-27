@@ -1,5 +1,6 @@
 const { Gpio } = require('pigpio');
 const dotenv = require('dotenv');
+const Neon = require('@cityofzion/neon-js');
 
 // Read .env file to assign it to process.env variables
 dotenv.config();
@@ -23,11 +24,11 @@ const PULSE_LOCKED = 2200;
 const PULSE_UNLOCKED = 1000;
 
 // The raspberry pin at which the servo is attached
-const PIN_SERVO = 10;
+const PIN_SERVO = 14;
 // The pins of the 3 led
-const PIN_LED_LOCKED = 11;
-const PIN_LED_UNLOCKED = 11;
-const PIN_LED_UNKNOWN = 11;
+const PIN_LED_LOCKED = 22;
+const PIN_LED_UNLOCKED = 17;
+const PIN_LED_UNKNOWN = 27;
 
 // The delay of the main loop ms
 const DELAY_MAIN_LOOP = 3000;
@@ -80,7 +81,7 @@ async function readContractState(tokenId) {
 			networkMagic: NEO_NETWORK_MAGIC,
 			rpcAddress: NEO_SEED_RPC_URL,
 		});
-		const result = await contract.testInvoke('getLocked', [sc.ContractParam.integer(tokenId)]);
+		const result = await contract.testInvoke('getLocked', [Neon.sc.ContractParam.integer(tokenId)]);
 		return Boolean(result.stack[0].value);
 	} catch (error) {
 		console.error(error);
