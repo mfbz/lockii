@@ -142,7 +142,7 @@ export default function IndexPage() {
 								{'Your new Neo blockchain powered IoT device'}
 							</Typography.Title>
 
-							<div ref={observe} style={{ width: '100%', position: 'absolute', bottom: -width / 1.5, margin: 0 }}>
+							<div ref={observe} style={{ width: '100%', position: 'absolute', bottom: -width / 1.35, margin: 0 }}>
 								<LockiiIcon width={'100%'} />
 							</div>
 						</div>
