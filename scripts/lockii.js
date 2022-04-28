@@ -17,10 +17,9 @@ const NEO_LOCKII_CONTRACT_HASH = '0xc1b99a1a4332212b7ae1b52f154996b1dadd2331';
 // The token id of this lock to be used to retrieve the nft state
 const NEO_LOCKII_TOKEN_ID = process.env.TOKEN_ID;
 
-// These parameters are in microseconds.
-// The servo pulse determines the degree at which the indicator is positioned.
-// Need to play with these settings to get it to work properly with your door lock
-const PULSE_LOCKED = 2200;
+// These parameters are in microseconds
+// The servo pulse determines the degree at which the indicator is positioned
+const PULSE_LOCKED = 2000;
 const PULSE_UNLOCKED = 1000;
 
 // The raspberry pin at which the servo is attached
@@ -40,6 +39,7 @@ const DELAY_MAIN_LOOP = 3000;
 // Main loop does an rpc call to the Neo blockchain to retrieve the state of the current token and open/close the lock.
 // The state can be changed only by the owner of the token that is the only one that can alter its state
 (async () => {
+	console.log('Initializing GPIOs');
 	// The servo motor to be controlled
 	const motor = new Gpio(PIN_SERVO, { mode: Gpio.OUTPUT });
 	// The status leds
@@ -49,12 +49,14 @@ const DELAY_MAIN_LOOP = 3000;
 		unknown: new Gpio(PIN_LED_UNKNOWN, { mode: Gpio.OUTPUT }),
 	};
 
+	console.log('Starting loop cycle');
 	// The current state of the lock
-	let locked = false;
+	let locked = null;
 	// Here i continously check for the state of the lock that can be changed only by the owner of the nft
 	while (true) {
 		// Get onchain the status of the lock
 		const _locked = await readContractState(NEO_LOCKII_TOKEN_ID);
+		console.log('Locked reading is: ' + _locked);
 
 		// Do changes on the lock only if data has changed
 		if (_locked !== locked) {
@@ -82,7 +84,7 @@ async function readContractState(tokenId) {
 			rpcAddress: NEO_SEED_RPC_URL,
 		});
 		const result = await contract.testInvoke('getLocked', [Neon.sc.ContractParam.integer(tokenId)]);
-		return Boolean(result.stack[0].value);
+		return result?.stack?.[0]?.value ? result.stack[0].value === '1' : null;
 	} catch (error) {
 		console.error(error);
 		return null;
